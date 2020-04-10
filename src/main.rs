@@ -63,7 +63,7 @@ fn polymorphism() -> Result<(), MyError> {
 extern crate simple_error;
 use simple_error::SimpleError;
 
-static CRATE_ERR: bool = true;
+static CRATE_ERR: bool = false;
 
 fn polymorphism_with_crate() -> Result<(), SimpleError> {
     let vec1: Vec<i32> = vec![1, 2, 3, 4, 5];
@@ -88,11 +88,36 @@ fn polymorphism_with_crate() -> Result<(), SimpleError> {
     for each in vec3 {
         match use_return_error(each) {
             Ok(_) => println!("Went fine"),
-            Err(e) => println!("Got SimpleError {}", e),
+            Err(e) => eprintln!("Got SimpleError {}", e),
         }
     }
 
     Ok(())
+}
+
+extern crate recap;
+extern crate serde;
+
+use recap::Recap;
+use serde::Deserialize;
+
+#[derive(Debug, Deserialize, PartialEq, Recap)]
+#[recap(regex = r#"(?x)
+ (?P<foo>\d+)
+ \s+
+ (?P<bar>true|false)
+ \s+
+ (?P<baz>\S+)
+ "#)]
+struct LogEntry {
+    foo: usize,
+    bar: bool,
+    baz: String,
+}
+
+fn macros() {
+    let entry: LogEntry = "1 true hello".parse().unwrap();
+    println!("Log entry is {}, {}, {}", entry.foo, entry.bar, entry.baz);
 }
 
 fn main() {
@@ -104,4 +129,6 @@ fn main() {
 
     polymorphism().unwrap_or_else(|e| eprintln!("Yikes... Error message: {}", e));
     polymorphism_with_crate().unwrap_or_else(|e| eprintln!("Yikes... Error message: {}", e));
+
+    macros();
 }

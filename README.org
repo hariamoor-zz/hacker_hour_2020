@@ -1,1 +1,3 @@
 Code examples for [[https://usacs.rutgers.edu/][USACS]] Hacker Hour 2020
+
+Slides posted [[https://bit.ly/2V0YMs5][here]]
