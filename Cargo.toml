@@ -1,5 +1,5 @@
 [package]
-name = "HackerHour2020"
+name = "hacker_hour2020"
 version = "0.1.0"
 authors = ["Hari Amoor <amoor.hari@gmail.com>"]
 edition = "2018"
