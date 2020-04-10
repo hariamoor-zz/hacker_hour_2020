@@ -76,6 +76,22 @@ fn polymorphism_with_crate() -> Result<(), SimpleError> {
         return Err(SimpleError::new("Fuck... At least this time the errors were cleaner!"));
     }
 
+    let vec3: Vec<Result<(), MyError>> = vec![Ok(()), Err(MyError::new("Some error"))];
+
+    fn use_return_error(var: Result<(), MyError>) -> Result<(), SimpleError> {
+        match var {
+            Ok(_) => Ok(()),
+            Err(s) => Err(SimpleError::from(s)),
+        }
+    }
+
+    for each in vec3 {
+        match use_return_error(each) {
+            Ok(n) => println!("Went fine"),
+            Err(e) => println!("Got SimpleError {}", e),
+        }
+    }
+
     Ok(())
 }
 
